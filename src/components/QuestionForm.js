@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+
 function QuestionForm(props) {
   const [formData, setFormData] = useState({
     prompt: "",
@@ -19,8 +20,33 @@ function QuestionForm(props) {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(formData);
+    // console.log(formData); 
+    
+    async function postData(){
+      let configObj = {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: {
+          "prompt": formData.prompt,
+          "answers": [formData.answer1, formData.answer2, formData.answer3, formData.answer4 ],
+          "correctIndex": formData.correctIndex,
+        }
+      }
+      let req = await fetch("http://localhost:4000/questions", configObj)
+      let res = await req.json()
+      console.log(req)
+      console.log(res)
+    }
+    await postData()
   }
+
+  // useEffect(() => {
+  //   console.log("question submitted!")
+    
+  //   sendData()
+  // },[])
 
   return (
     <section>
